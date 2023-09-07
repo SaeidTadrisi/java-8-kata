@@ -1,5 +1,6 @@
 package collection.interfaces;
 
+
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -7,9 +8,10 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import static org.hamcrest.Matchers.hasKey;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.*;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
+
 
 public class Exercise2Test {
 
@@ -27,7 +29,7 @@ public class Exercise2Test {
         /**
          * Try to get from key "Alice" using {@link Map#getOrDefault}. If the key doesn't exist, use 30 as default.
          */
-        Integer defaultVal = null;
+        Integer defaultVal = map.getOrDefault("Alice", 30);
 
         assertThat(defaultVal, is(30));
     }
@@ -39,8 +41,8 @@ public class Exercise2Test {
         /**
          * Try to put 2 entry with key as "Alice" value as 32, key as "Joe" and value as 32 using {@link Map#putIfAbsent}.
          */
-        // map.
-        // map.
+         map.putIfAbsent("Alice", 32);
+         map.putIfAbsent("Joe", 32);
 
         assertThat(map.get("Alice"), is(32));
         assertThat(map.get("Joe"), is(22));
@@ -54,9 +56,9 @@ public class Exercise2Test {
          * Merge 2 entry to {@link map} with key="Alice" value=32, key="Joe" value=32 using {@link Map#merge}.
          * If the value already exist for the key, remap with sum value.
          */
-        BiFunction<Integer, Integer, Integer> remappingFunction = null;
-        // map.
-        // map.
+        BiFunction<Integer, Integer, Integer> remappingFunction = Integer::sum;
+         map.merge("Alice", 32, remappingFunction);
+         map.merge("Joe", 32, remappingFunction);
 
         assertThat(map.get("Alice"), is(32));
         assertThat(map.get("Joe"), is(54));
@@ -69,10 +71,10 @@ public class Exercise2Test {
         /**
          * Try to increment the value for keys "Joe", "Steven" and "Alice" using {@link Map#computeIfPresent}.
          */
-        BiFunction<Object, Integer, Integer> remappingFunction = null;
-        // map.
-        // map.
-        // map.
+        BiFunction<Object, Integer, Integer> remappingFunction = (key, value) -> ++value;
+         map.computeIfPresent("Joe", remappingFunction);
+         map.computeIfPresent("Steven", remappingFunction);
+         map.computeIfPresent("Alice", remappingFunction);
 
         assertThat(map.get("Joe"), is(23));
         assertThat(map.get("Steven"), is(28));
